@@ -1,16 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Header from './header';
-import Body from './body';
-import Footer from './footer';
+import React from "react";
+import ReactDOM from "react-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Header from "./Header";
+import Body from "./Body";
+import Footer from "./Footer";
 
 ReactDOM.render(
-    <div>
-        <Header/>
-        <Body/>
-        <Footer/>
-    </div>
-        ,
-    document.querySelector('#container')
+  <div>
+    <Header />
+    <Body />
+    <Footer />
+  </div>,
+  document.querySelector("#container")
 );

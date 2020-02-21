@@ -1,25 +1,28 @@
 import React, { Component } from "react";
 import { Form, Button } from "react-bootstrap";
 import axios from "axios";
+import $ from "jquery";
+import {} from "jquery.cookie";
 axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
 
 class LoginForm extends Component {
-  state = {};
+  state = {
+    login_email: ""
+  };
   join = () => {
     const send_param = {
       headers,
       email: this.joinEmail.value,
+      name: this.joinName.value,
       password: this.joinPw.value
     };
     axios
-      .post("http://localhost:8080/member/insert", send_param)
+      .post("http://localhost:8080/member/join", send_param)
       //정상 수행
       .then(returnData => {
         if (returnData.data.message) {
-          this.setState({
-            name: returnData.data.name
-          });
+          alert(returnData.data.message);
         } else {
           alert("회원가입 실패");
         }
@@ -30,12 +33,35 @@ class LoginForm extends Component {
       });
   };
   login = () => {
-    alert(this.password.value);
+    const send_param = {
+      headers,
+      email: this.loginEmail.value,
+      password: this.loginPw.value
+    };
+    axios
+      .post("http://localhost:8080/member/login", send_param)
+      //정상 수행
+      .then(returnData => {
+        if (returnData.data.message) {
+          $.cookie("login_email", returnData.data.email);
+          this.setState({
+            login_email: returnData.data.name
+          });
+          alert(returnData.data.message);
+          window.location.reload();
+        } else {
+          alert("로그인 실패");
+        }
+      })
+      //에러
+      .catch(err => {
+        console.log(err);
+      });
   };
   render() {
     return (
       <Form>
-        <Form.Group controlId="formBasicEmail">
+        <Form.Group controlId="joinForm">
           <Form.Label>Email address</Form.Label>
           <Form.Control
             type="email"
@@ -45,25 +71,29 @@ class LoginForm extends Component {
           <Form.Text className="text-muted">
             We'll never share your email with anyone else.
           </Form.Text>
-        </Form.Group>
-        <Form.Group controlId="loginForm">
+          <Form.Label>name</Form.Label>
+          <Form.Control
+            type="text"
+            ref={ref => (this.joinName = ref)}
+            placeholder="name"
+          />
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
             ref={ref => (this.joinPw = ref)}
             placeholder="Password"
           />
-          <Button onClick={this.login} variant="primary" type="button">
-            로그인
+          <Button onClick={this.join} variant="primary" type="button">
+            회원가입
           </Button>
         </Form.Group>
         <br></br>
         <br></br>
-        <Form.Group controlId="joinForm">
+        <Form.Group controlId="loginForm">
           <Form.Label>Email address</Form.Label>
           <Form.Control
             type="email"
-            ref={ref => (this.email = ref)}
+            ref={ref => (this.loginEmail = ref)}
             placeholder="Enter email"
           />
           <Form.Text className="text-muted">
@@ -72,11 +102,11 @@ class LoginForm extends Component {
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
-            ref={ref => (this.password = ref)}
+            ref={ref => (this.loginPw = ref)}
             placeholder="Password"
           />
-          <Button onClick={this.join} variant="primary" type="button">
-            회원가입
+          <Button onClick={this.login} variant="primary" type="button">
+            로그인
           </Button>
         </Form.Group>
       </Form>
