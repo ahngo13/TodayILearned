@@ -59,8 +59,11 @@ class LoginForm extends Component {
       });
   };
   render() {
+    const formStyle={
+      margin : 50
+    };
     return (
-      <Form>
+      <Form style={formStyle}>
         <Form.Group controlId="joinForm">
           <Form.Label>Email address</Form.Label>
           <Form.Control
@@ -87,8 +90,7 @@ class LoginForm extends Component {
             회원가입
           </Button>
         </Form.Group>
-        <br></br>
-        <br></br>
+
         <Form.Group controlId="loginForm">
           <Form.Label>Email address</Form.Label>
           <Form.Control
@@ -96,9 +98,6 @@ class LoginForm extends Component {
             ref={ref => (this.loginEmail = ref)}
             placeholder="Enter email"
           />
-          <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text>
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
