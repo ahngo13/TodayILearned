@@ -16,7 +16,7 @@ class Header extends Component {
       })
       .then(returnData => {
         if (returnData.data.message) {
-          $.removeCookie("login_email");
+          $.removeCookie("login_id");
           alert("로그아웃 되었습니다!");
           window.location.href = '/';
         }

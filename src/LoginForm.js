@@ -7,9 +7,9 @@ axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
 
 class LoginForm extends Component {
-  state = {
+/*   state = {
     login_email: ""
-  };
+  }; */
   join = () => {
     const send_param = {
       headers,
@@ -43,10 +43,11 @@ class LoginForm extends Component {
       //정상 수행
       .then(returnData => {
         if (returnData.data.message) {
-          $.cookie("login_email", returnData.data.email);
-          this.setState({
+          console.log("login_id:" + returnData.data._id);
+          $.cookie("login_id", returnData.data._id);
+/*           this.setState({
             login_email: returnData.data.name
-          });
+          }); */
           alert(returnData.data.message);
           window.location.reload();
         } else {

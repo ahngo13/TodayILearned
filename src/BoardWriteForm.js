@@ -1,42 +1,57 @@
 import React, {Component} from 'react';
-import { Form } from "react-bootstrap";
+import CKEditor from 'ckeditor4-react';
+import { Button, Form } from "react-bootstrap";
+import axios from "axios";
+import $ from "jquery";
+import {} from "jquery.cookie";
+axios.defaults.withCredentials = true;
+const headers = { withCredentials: true };
 
 class BoardWriteForm extends Component{
+    state={
+        data:""
+    };
+
+    writeBoard=()=>{
+        const send_param = {
+            headers,
+            _id: $.cookie("login_id"),
+            title: this.boardTitle.value,
+            content: this.state.data,
+          };
+          axios
+            .post("http://localhost:8080/board/write", send_param)
+            //정상 수행
+            .then(returnData => {
+              if (returnData.data.message) {
+                alert(returnData.data.message);
+              } else {
+                alert("글쓰기 실패");
+              }
+            })
+            //에러
+            .catch(err => {
+              console.log(err);
+            });
+    }
+
+    onEditorChange=(evt)=>{
+        this.setState({
+            data: evt.editor.getData()
+        }); 
+    };
+
     render(){
-        const formStyle = {
+        const divStyle = {
             margin : 50
         };
         return(
-        <Form style={formStyle}>
-            <Form.Group controlId="exampleForm.ControlInput1">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="name@example.com" />
-            </Form.Group>
-            <Form.Group controlId="exampleForm.ControlSelect1">
-                <Form.Label>Example select</Form.Label>
-                <Form.Control as="select">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                </Form.Control>
-            </Form.Group>
-            <Form.Group controlId="exampleForm.ControlSelect2">
-                <Form.Label>Example multiple select</Form.Label>
-                <Form.Control as="select" multiple>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                </Form.Control>
-            </Form.Group>
-            <Form.Group controlId="exampleForm.ControlTextarea1">
-                <Form.Label>Example textarea</Form.Label>
-                <Form.Control as="textarea" rows="3" />
-            </Form.Group>
-        </Form>
+            <div style={divStyle} className="App">
+                <h2>글쓰기</h2>
+                <Form.Control type="text" placeholder="글 제목" ref={ref => (this.boardTitle = ref)} />
+                <CKEditor data={this.state.data} onChange={this.onEditorChange}></CKEditor>
+                <Button onClick={this.writeBoard}>저장하기</Button>
+            </div>
         );
     }
 }
