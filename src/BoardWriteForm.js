@@ -47,7 +47,7 @@ class BoardWriteForm extends Component{
         };
         return(
             <div style={divStyle} className="App">
-                <h2>글쓰기</h2>
+                <h2>글쓰기 {this.props._id}</h2>
                 <Form.Control type="text" placeholder="글 제목" ref={ref => (this.boardTitle = ref)} />
                 <CKEditor data={this.state.data} onChange={this.onEditorChange}></CKEditor>
                 <Button onClick={this.writeBoard}>저장하기</Button>
