@@ -25,19 +25,21 @@ class BoardDetail extends Component {
       headers,
       _id
     };
-    axios
-      .post("http://localhost:8080/board/delete", send_param)
-      //정상 수행
-      .then(returnData => {
-        alert("게시글이 삭제 되었습니다.");
-        window.location.href = "/";
-      })
-      //에러
-      .catch(err => {
-        console.log(err);
-        alert("글 삭제 실패");
-      });
-  };
+      if(window.confirm("정말 삭제하시겠습니까?")){  
+        axios
+        .post("http://localhost:8080/board/delete", send_param)
+        //정상 수행
+        .then(returnData => {
+          alert("게시글이 삭제 되었습니다.");
+          window.location.href = "/";
+        })
+        //에러
+        .catch(err => {
+          console.log(err);
+          alert("글 삭제 실패");
+        });
+      }
+    };
 
   getDetail = () => {
     const send_param = {
@@ -68,7 +70,11 @@ class BoardDetail extends Component {
                 </tbody>
               </Table>
               <div>
-                <Button>글 수정</Button>
+                <NavLink
+                  to={{ pathname: "/boardWrite", query: { title: returnData.data.board[0].title, content: returnData.data.board[0].content, _id: this.props.location.query._id }}}
+                >
+                  <Button>글 수정</Button>
+                </NavLink>
                 <Button
                   onClick={this.deleteBoard.bind(
                     null,

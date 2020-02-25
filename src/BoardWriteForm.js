@@ -12,15 +12,41 @@ class BoardWriteForm extends Component {
     data: ""
   };
 
+  componentDidMount() {
+    if (this.props.location.query !== undefined) {
+      this.boardTitle.value = this.props.location.query.title;
+      this.setState({
+        data : this.props.location.query.content
+      });
+    }
+  }
+
   writeBoard = () => {
-    const send_param = {
-      headers,
-      _id: $.cookie("login_id"),
-      title: this.boardTitle.value,
-      content: this.state.data
-    };
+
+    let url;
+    let send_param;
+
+    if (this.props.location.query !== undefined) {
+      send_param = {
+        headers,
+        _id : this.props.location.query._id,
+        writer: $.cookie("login_id"),
+        title: this.boardTitle.value,
+        content: this.state.data
+      };
+      url = "http://localhost:8080/board/update";
+    }else{
+      send_param = {
+        headers,
+        _id: $.cookie("login_id"),
+        title: this.boardTitle.value,
+        content: this.state.data
+      };
+      url = "http://localhost:8080/board/write";
+    }
+
     axios
-      .post("http://localhost:8080/board/write", send_param)
+      .post(url, send_param)
       //정상 수행
       .then(returnData => {
         if (returnData.data.message) {
