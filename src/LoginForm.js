@@ -10,6 +10,7 @@ class LoginForm extends Component {
 /*   state = {
     login_email: ""
   }; */
+
   join = () => {
     const send_param = {
       headers,
@@ -63,6 +64,10 @@ class LoginForm extends Component {
     const formStyle={
       margin : 50
     };
+    const buttonStyle={
+      marginTop : 5
+    };
+
     return (
       <Form style={formStyle}>
         <Form.Group controlId="joinForm">
@@ -87,7 +92,7 @@ class LoginForm extends Component {
             ref={ref => (this.joinPw = ref)}
             placeholder="Password"
           />
-          <Button onClick={this.join} variant="primary" type="button">
+          <Button style={buttonStyle} onClick={this.join} variant="primary" type="button" block>
             회원가입
           </Button>
         </Form.Group>
@@ -105,7 +110,7 @@ class LoginForm extends Component {
             ref={ref => (this.loginPw = ref)}
             placeholder="Password"
           />
-          <Button onClick={this.login} variant="primary" type="button">
+          <Button style={buttonStyle} onClick={this.login} variant="primary" type="button" block>
             로그인
           </Button>
         </Form.Group>
