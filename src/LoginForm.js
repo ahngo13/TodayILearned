@@ -44,7 +44,7 @@ class LoginForm extends Component {
       //정상 수행
       .then(returnData => {
         if (returnData.data.message) {
-          console.log("login_id:" + returnData.data._id);
+          // console.log("login_id:" + returnData.data._id);
           $.cookie("login_id", returnData.data._id);
 /*           this.setState({
             login_email: returnData.data.name

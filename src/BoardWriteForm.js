@@ -74,7 +74,7 @@ class BoardWriteForm extends Component {
     };
     return (
       <div style={divStyle} className="App">
-        <h2>글쓰기 {this.props._id}</h2>
+        <h2>글쓰기</h2>
         <Form.Control
           type="text"
           placeholder="글 제목"
