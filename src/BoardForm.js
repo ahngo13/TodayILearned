@@ -127,7 +127,6 @@ class BoardForm extends Component {
             <tbody>{this.state.boardList}</tbody>
           </Table>
         </div>
-        <div style={divStyle}>{this.state.board}</div>
       </div>
     );
   }
