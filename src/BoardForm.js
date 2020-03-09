@@ -45,12 +45,13 @@ class BoardForm extends Component {
       _id: $.cookie("login_id")
     };
     axios
-      .post("http://localhost:8080/board/getBoardList", send_param)
+      .post("http://70.12.113.167:8080/board/getBoardList", send_param)
       .then(returnData => {
-        if (returnData.data.list) {
+        let boardList;
+        if (returnData.data.list.length > 0) {
           // console.log(returnData.data.list.length);
           const boards = returnData.data.list;
-          const boardList = boards.map(item => (
+          boardList = boards.map(item => (
             <BoardRow
               key={Date.now() + Math.random() * 500}
               _id={item._id}
@@ -63,8 +64,15 @@ class BoardForm extends Component {
             boardList: boardList
           });
         } else {
-          alert("글 목록 조회 실패");
-          window.location.reload();
+          boardList = (
+            <tr>
+              <td colSpan="2">작성한 게시글이 존재하지 않습니다.</td>
+            </tr>
+          );
+          this.setState({
+            boardList: boardList
+          });
+          // window.location.reload();
         }
       })
       .catch(err => {

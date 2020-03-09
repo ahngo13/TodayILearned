@@ -23,9 +23,9 @@ class BoardDetail extends Component {
       headers,
       _id
     };
-      if(window.confirm("정말 삭제하시겠습니까?")){  
-        axios
-        .post("http://localhost:8080/board/delete", send_param)
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      axios
+        .post("http://70.12.113.167:8080/board/delete", send_param)
         //정상 수행
         .then(returnData => {
           alert("게시글이 삭제 되었습니다.");
@@ -36,16 +36,19 @@ class BoardDetail extends Component {
           console.log(err);
           alert("글 삭제 실패");
         });
-      }
-    };
+    }
+  };
 
   getDetail = () => {
     const send_param = {
       headers,
       _id: this.props.location.query._id
     };
+    const marginBottom = {
+      marginBottom: 5
+    };
     axios
-      .post("http://localhost:8080/board/detail", send_param)
+      .post("http://70.12.113.167:8080/board/detail", send_param)
       //정상 수행
       .then(returnData => {
         if (returnData.data.board[0]) {
@@ -69,11 +72,21 @@ class BoardDetail extends Component {
               </Table>
               <div>
                 <NavLink
-                  to={{ pathname: "/boardWrite", query: { title: returnData.data.board[0].title, content: returnData.data.board[0].content, _id: this.props.location.query._id }}}
+                  to={{
+                    pathname: "/boardWrite",
+                    query: {
+                      title: returnData.data.board[0].title,
+                      content: returnData.data.board[0].content,
+                      _id: this.props.location.query._id
+                    }
+                  }}
                 >
-                  <Button>글 수정</Button>
+                  <Button block style={marginBottom}>
+                    글 수정
+                  </Button>
                 </NavLink>
                 <Button
+                  block
                   onClick={this.deleteBoard.bind(
                     null,
                     this.props.location.query._id

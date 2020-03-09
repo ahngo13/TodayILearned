@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Navbar, Button, Image } from "react-bootstrap";
-import {NavLink} from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 import axios from "axios";
 import $ from "jquery";
 import {} from "jquery.cookie";
@@ -8,60 +8,63 @@ axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
 
 class Header extends Component {
- 
   state = {
-    buttonDisplay : "none"
+    buttonDisplay: "none"
   };
 
   componentDidMount() {
-    if($.cookie('login_id')){
+    if ($.cookie("login_id")) {
       this.setState({
-        buttonDisplay : "block"
+        buttonDisplay: "block"
       });
-    }else{
+    } else {
       this.setState({
-        buttonDisplay : "none"
+        buttonDisplay: "none"
       });
     }
   }
 
   logout = () => {
     axios
-      .get("http://localhost:8080/member/logout", {
+      .get("http://70.12.113.167:8080/member/logout", {
         headers
       })
       .then(returnData => {
         if (returnData.data.message) {
           $.removeCookie("login_id");
           alert("로그아웃 되었습니다!");
-          window.location.href = '/';
+          window.location.href = "/";
         }
       });
   };
   render() {
-    const buttonStyle={
+    const buttonStyle = {
       margin: "0px 5px 0px 10px",
       display: this.state.buttonDisplay
-    }
+    };
 
     return (
       <div>
         <Navbar>
           <Navbar.Brand href="/">Today I Learned</Navbar.Brand>
-          <Navbar.Toggle/>
-          <Navbar.Collapse className="justify-content-end" >
+          <Navbar.Toggle />
+          <Navbar.Collapse className="justify-content-end">
             <NavLink to="/">
-              <Button style={buttonStyle} variant="primary">글목록</Button>
+              <Button style={buttonStyle} variant="primary">
+                글목록
+              </Button>
             </NavLink>
             <NavLink to="/boardWrite">
-              <Button style={buttonStyle} variant="primary">글쓰기</Button>
+              <Button style={buttonStyle} variant="primary">
+                글쓰기
+              </Button>
             </NavLink>
             <Button style={buttonStyle} onClick={this.logout} variant="primary">
               로그아웃
             </Button>
           </Navbar.Collapse>
         </Navbar>
-          <Image src="./img/main.png" fluid/>
+        <Image src="./img/main.png" fluid />
       </div>
     );
   }

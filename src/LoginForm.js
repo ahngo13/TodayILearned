@@ -7,11 +7,34 @@ axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
 
 class LoginForm extends Component {
-/*   state = {
-    login_email: ""
-  }; */
-
   join = () => {
+    const joinEmail = this.joinEmail.value;
+    const joinName = this.joinName.value;
+    const joinPw = this.joinPw.value;
+    const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+
+    if (joinEmail === "" || joinEmail === undefined) {
+      alert("이메일 주소를 입력해주세요.");
+      this.joinEmail.focus();
+      return;
+    } else if (
+      joinEmail.match(regExp) === null ||
+      joinEmail.match(regExp) === undefined
+    ) {
+      alert("이메일 형식에 맞게 입력해주세요.");
+      this.joinEmail.value = "";
+      this.joinEmail.focus();
+      return;
+    } else if (joinName === "" || joinName === undefined) {
+      alert("이름을 입력해주세요.");
+      this.joinName.focus();
+      return;
+    } else if (joinPw === "" || joinPw === undefined) {
+      alert("비밀번호를 입력해주세요.");
+      this.joinPw.focus();
+      return;
+    }
+
     const send_param = {
       headers,
       email: this.joinEmail.value,
@@ -19,11 +42,20 @@ class LoginForm extends Component {
       password: this.joinPw.value
     };
     axios
-      .post("http://localhost:8080/member/join", send_param)
+      .post("http://70.12.113.167:8080/member/join", send_param)
       //정상 수행
       .then(returnData => {
         if (returnData.data.message) {
           alert(returnData.data.message);
+          //이메일 중복 체크
+          if (returnData.data.dupYn === "0") {
+            this.joinEmail.value = "";
+            this.joinName.value = "";
+            this.joinPw.value = "";
+          } else {
+            this.joinEmail.value = "";
+            this.joinEmail.focus();
+          }
         } else {
           alert("회원가입 실패");
         }
@@ -34,25 +66,35 @@ class LoginForm extends Component {
       });
   };
   login = () => {
+    const loginEmail = this.loginEmail.value;
+    const loginPw = this.loginPw.value;
+
+    if (loginEmail === "" || loginEmail === undefined) {
+      alert("이메일 주소를 입력해주세요.");
+      this.loginEmail.focus();
+      return;
+    } else if (loginPw === "" || loginPw === undefined) {
+      alert("비밀번호를 입력해주세요.");
+      this.loginPw.focus();
+      return;
+    }
+
     const send_param = {
       headers,
       email: this.loginEmail.value,
       password: this.loginPw.value
     };
     axios
-      .post("http://localhost:8080/member/login", send_param)
+      .post("http://70.12.113.167:8080/member/login", send_param)
       //정상 수행
       .then(returnData => {
         if (returnData.data.message) {
           // console.log("login_id:" + returnData.data._id);
           $.cookie("login_id", returnData.data._id);
-/*           this.setState({
-            login_email: returnData.data.name
-          }); */
           alert(returnData.data.message);
           window.location.reload();
         } else {
-          alert("로그인 실패");
+          alert("아이디나 패스워드가 일치하지 않습니다.");
         }
       })
       //에러
@@ -61,11 +103,11 @@ class LoginForm extends Component {
       });
   };
   render() {
-    const formStyle={
-      margin : 50
+    const formStyle = {
+      margin: 50
     };
-    const buttonStyle={
-      marginTop : 5
+    const buttonStyle = {
+      marginTop: 10
     };
 
     return (
@@ -74,6 +116,7 @@ class LoginForm extends Component {
           <Form.Label>Email address</Form.Label>
           <Form.Control
             type="email"
+            maxLength="100"
             ref={ref => (this.joinEmail = ref)}
             placeholder="Enter email"
           />
@@ -83,16 +126,24 @@ class LoginForm extends Component {
           <Form.Label>name</Form.Label>
           <Form.Control
             type="text"
+            maxLength="20"
             ref={ref => (this.joinName = ref)}
             placeholder="name"
           />
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
+            maxLength="20"
             ref={ref => (this.joinPw = ref)}
             placeholder="Password"
           />
-          <Button style={buttonStyle} onClick={this.join} variant="primary" type="button" block>
+          <Button
+            style={buttonStyle}
+            onClick={this.join}
+            variant="primary"
+            type="button"
+            block
+          >
             회원가입
           </Button>
         </Form.Group>
@@ -101,16 +152,24 @@ class LoginForm extends Component {
           <Form.Label>Email address</Form.Label>
           <Form.Control
             type="email"
+            maxLength="100"
             ref={ref => (this.loginEmail = ref)}
             placeholder="Enter email"
           />
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
+            maxLength="20"
             ref={ref => (this.loginPw = ref)}
             placeholder="Password"
           />
-          <Button style={buttonStyle} onClick={this.login} variant="primary" type="button" block>
+          <Button
+            style={buttonStyle}
+            onClick={this.login}
+            variant="primary"
+            type="button"
+            block
+          >
             로그인
           </Button>
         </Form.Group>

@@ -16,33 +16,32 @@ class BoardWriteForm extends Component {
     if (this.props.location.query !== undefined) {
       this.boardTitle.value = this.props.location.query.title;
       this.setState({
-        data : this.props.location.query.content
+        data: this.props.location.query.content
       });
     }
   }
 
   writeBoard = () => {
-
     let url;
     let send_param;
 
     if (this.props.location.query !== undefined) {
       send_param = {
         headers,
-        _id : this.props.location.query._id,
+        _id: this.props.location.query._id,
         writer: $.cookie("login_id"),
         title: this.boardTitle.value,
         content: this.state.data
       };
-      url = "http://localhost:8080/board/update";
-    }else{
+      url = "http://70.12.113.167:8080/board/update";
+    } else {
       send_param = {
         headers,
         _id: $.cookie("login_id"),
         title: this.boardTitle.value,
         content: this.state.data
       };
-      url = "http://localhost:8080/board/write";
+      url = "http://70.12.113.167:8080/board/write";
     }
 
     axios
@@ -72,11 +71,18 @@ class BoardWriteForm extends Component {
     const divStyle = {
       margin: 50
     };
+    const titleStyle = {
+      marginBottom: 5
+    };
+    const buttonStyle = {
+      marginTop: 5
+    };
     return (
       <div style={divStyle} className="App">
         <h2>글쓰기</h2>
         <Form.Control
           type="text"
+          style={titleStyle}
           placeholder="글 제목"
           ref={ref => (this.boardTitle = ref)}
         />
@@ -84,7 +90,9 @@ class BoardWriteForm extends Component {
           data={this.state.data}
           onChange={this.onEditorChange}
         ></CKEditor>
-        <Button onClick={this.writeBoard}>저장하기</Button>
+        <Button style={buttonStyle} onClick={this.writeBoard} block>
+          저장하기
+        </Button>
       </div>
     );
   }
