@@ -109,7 +109,7 @@ class LoginForm extends Component {
       .then(returnData => {
         if (returnData.data.message) {
           // console.log("login_id:" + returnData.data._id);
-          $.cookie("login_id", returnData.data._id);
+          $.cookie("login_id", returnData.data._id, {expires: 1});
           alert(returnData.data.message);
           window.location.reload();
         } else {
