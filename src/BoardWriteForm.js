@@ -33,7 +33,7 @@ class BoardWriteForm extends Component {
         title: this.boardTitle.value,
         content: this.state.data
       };
-      url = "http://70.12.113.167:8080/board/update";
+      url = "http://localhost:8080/board/update";
     } else {
       send_param = {
         headers,
@@ -41,7 +41,7 @@ class BoardWriteForm extends Component {
         title: this.boardTitle.value,
         content: this.state.data
       };
-      url = "http://70.12.113.167:8080/board/write";
+      url = "http://localhost:8080/board/write";
     }
 
     axios

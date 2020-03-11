@@ -12,7 +12,7 @@ class LoginForm extends Component {
     const joinName = this.joinName.value;
     const joinPw = this.joinPw.value;
     const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-
+    const regExp2 = /^[A-Za-z0-9]{8,64}$/;
     if (joinEmail === "" || joinEmail === undefined) {
       alert("이메일 주소를 입력해주세요.");
       this.joinEmail.focus();
@@ -33,6 +33,14 @@ class LoginForm extends Component {
       alert("비밀번호를 입력해주세요.");
       this.joinPw.focus();
       return;
+    } else if(
+      joinPw.match(regExp2) === null ||
+      joinPw.match(regExp2) === undefined
+    ){
+      alert("비밀번호를 숫자와 문자 포함 8~64자리로 입력해주세요.");
+      this.joinPw.value = "";
+      this.joinPw.focus();
+      return;
     }
 
     const send_param = {
@@ -42,19 +50,19 @@ class LoginForm extends Component {
       password: this.joinPw.value
     };
     axios
-      .post("http://70.12.113.167:8080/member/join", send_param)
+      .post("http://localhost:8080/member/join", send_param)
       //정상 수행
       .then(returnData => {
         if (returnData.data.message) {
           alert(returnData.data.message);
           //이메일 중복 체크
-          if (returnData.data.dupYn === "0") {
+          if (returnData.data.dupYn === "1") {
+            this.joinEmail.value = "";
+            this.joinEmail.focus();
+          } else {
             this.joinEmail.value = "";
             this.joinName.value = "";
             this.joinPw.value = "";
-          } else {
-            this.joinEmail.value = "";
-            this.joinEmail.focus();
           }
         } else {
           alert("회원가입 실패");
@@ -85,7 +93,7 @@ class LoginForm extends Component {
       password: this.loginPw.value
     };
     axios
-      .post("http://70.12.113.167:8080/member/login", send_param)
+      .post("http://localhost:8080/member/login", send_param)
       //정상 수행
       .then(returnData => {
         if (returnData.data.message) {
@@ -94,7 +102,7 @@ class LoginForm extends Component {
           alert(returnData.data.message);
           window.location.reload();
         } else {
-          alert("아이디나 패스워드가 일치하지 않습니다.");
+          alert(returnData.data.message);
         }
       })
       //에러
@@ -133,7 +141,7 @@ class LoginForm extends Component {
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
-            maxLength="20"
+            maxLength="64"
             ref={ref => (this.joinPw = ref)}
             placeholder="Password"
           />
