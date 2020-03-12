@@ -11,7 +11,7 @@ class Body extends Component {
   render() {
     let resultForm;
     function getResultForm() {
-      console.log($.cookie("login_id"));
+      // console.log($.cookie("login_id"));
       if ($.cookie("login_id")) {
         resultForm = <Route exact path="/" component={BoardForm}></Route>;
         return resultForm;
