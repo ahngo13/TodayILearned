@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Form, Button } from "react-bootstrap";
-import { loadReCaptcha, ReCaptcha } from 'react-recaptcha-v3'
+import { loadReCaptcha, ReCaptcha } from "react-recaptcha-v3";
 import axios from "axios";
 import $ from "jquery";
 import {} from "jquery.cookie";
@@ -8,15 +8,14 @@ axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
 
 class LoginForm extends Component {
-
-  componentDidMount(){
+  componentDidMount() {
     loadReCaptcha("6LfGieAUAAAAAJSOoqXS5VQdT_e5AH8u0n2e1PDb");
   }
 
-  verifyCallback = (recaptchaToken) => {
-    // Here you will get the final recaptchaToken!!!  
-    console.log(recaptchaToken, "<= your recaptcha token")
-  }
+  verifyCallback = recaptchaToken => {
+    // Here you will get the final recaptchaToken!!!
+    console.log(recaptchaToken, "<= your recaptcha token");
+  };
 
   join = () => {
     const joinEmail = this.joinEmail.value;
@@ -44,10 +43,10 @@ class LoginForm extends Component {
       alert("비밀번호를 입력해주세요.");
       this.joinPw.focus();
       return;
-    } else if(
+    } else if (
       joinPw.match(regExp2) === null ||
       joinPw.match(regExp2) === undefined
-    ){
+    ) {
       alert("비밀번호를 숫자와 문자 포함 8~64자리로 입력해주세요.");
       this.joinPw.value = "";
       this.joinPw.focus();
@@ -109,7 +108,8 @@ class LoginForm extends Component {
       .then(returnData => {
         if (returnData.data.message) {
           // console.log("login_id:" + returnData.data._id);
-          $.cookie("login_id", returnData.data._id, {expires: 1});
+          $.cookie("login_id", returnData.data._id, { expires: 1 });
+          $.cookie("login_email", returnData.data.email, { expires: 1 });
           alert(returnData.data.message);
           window.location.reload();
         } else {
@@ -183,9 +183,9 @@ class LoginForm extends Component {
             placeholder="Password"
           />
           <ReCaptcha
-              sitekey="6LfGieAUAAAAAJSOoqXS5VQdT_e5AH8u0n2e1PDb"
-              action='login'
-              verifyCallback={this.verifyCallback}
+            sitekey="6LfGieAUAAAAAJSOoqXS5VQdT_e5AH8u0n2e1PDb"
+            action="login"
+            verifyCallback={this.verifyCallback}
           />
           <Button
             style={buttonStyle}
