@@ -28,13 +28,6 @@ class BoardWriteForm extends Component {
     const boardTitle = this.boardTitle.value;
     const boardContent = this.state.data;
 
-    send_param = {
-      headers,
-      "_id" : this.props.location.query._id,
-      "title": boardTitle,
-      "content": boardContent
-    };
-
     if (boardTitle === undefined || boardTitle === "") {
       alert("글 제목을 입력 해주세요.");
       boardTitle.focus();
@@ -46,8 +39,21 @@ class BoardWriteForm extends Component {
     
     if (this.props.location.query !== undefined) {
       url = "http://localhost:8080/board/update";
+      send_param = {
+        headers,
+        "_id" : this.props.location.query._id,
+        "title": boardTitle,
+        "content": boardContent
+      };
     } else {
       url = "http://localhost:8080/board/write";
+      send_param = {
+        headers,
+        "_id" : $.cookie("login_id"),
+        "title": boardTitle,
+        "content": boardContent
+      };
+
     }
 
     axios
